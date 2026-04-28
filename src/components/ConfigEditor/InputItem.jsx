@@ -154,6 +154,33 @@ export default function InputItem({ index, data, onChange, remove }) {
           </select>
         </div>
 
+        {formData.default === 'directory' && (
+          <div>
+            <label className="block text-sm font-medium text-white/70 mb-1">Folder Name</label>
+            <input
+              type="text"
+              value={formData.folder_name || ''}
+              onChange={(e) => handleChange('folder_name', e.target.value)}
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="e.g. /bilayers/input_images"
+            />
+          </div>
+        )}
+
+        <div>
+          <label className="block text-sm font-medium text-white/70 mb-1">File Count</label>
+          <select
+            value={formData.file_count || ''}
+            onChange={(e) => handleChange('file_count', e.target.value)}
+            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select count</option>
+            {fileCountOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+
         {/* File Format Field - Multiple values */}
         <div className="col-span-2">
           <div className="flex items-center justify-between mb-2">
@@ -189,31 +216,6 @@ export default function InputItem({ index, data, onChange, remove }) {
           ) : (
             <p className="text-sm text-white/50 italic">No file formats configured. Click "Add File Format" to add one.</p>
           )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">Folder Name</label>
-          <input
-            type="text"
-            value={formData.folder_name || ''}
-            onChange={(e) => handleChange('folder_name', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. /bilayers/input_images"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">File Count</label>
-          <select
-            value={formData.file_count || ''}
-            onChange={(e) => handleChange('file_count', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">Select count</option>
-            {fileCountOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
         </div>
 
         <div>

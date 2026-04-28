@@ -54,6 +54,7 @@ export default function LeftPanel({ setYamlCode }) {
     type: '', 
     cli_parameter: '',
     optional: false,
+    default: '',
     file_format: [],
     folder_name: '',
     file_count: '',
@@ -65,6 +66,7 @@ export default function LeftPanel({ setYamlCode }) {
     type: '', 
     cli_parameter: '',
     optional: false,
+    default: '',
     file_format: [],
     folder_name: '',
     file_count: '',
@@ -209,10 +211,15 @@ export default function LeftPanel({ setYamlCode }) {
           type: input.type || '',
           cli_parameter: input.cli_parameter || '',
           optional: input.optional ? 'True' : 'False',
-          folder_name: input.folder_name || '',
+          default: input.default || '',
           file_count: input.file_count || '',
           file_format: input.file_format && input.file_format.length > 0 ? input.file_format.filter(f => f.trim() !== '') : []
         };
+
+        // Only include folder_name if default is 'directory'
+        if (input.default === 'directory') {
+          inputData.folder_name = input.folder_name || '';
+        }
 
         // Add image-specific fields only if type is image
         if (input.type === 'image') {
@@ -233,10 +240,15 @@ export default function LeftPanel({ setYamlCode }) {
           type: output.type || '',
           cli_parameter: output.cli_parameter || '',
           optional: output.optional ? 'True' : 'False',
-          folder_name: output.folder_name || '',
+          default: output.default || '',
           file_count: output.file_count || '',
           file_format: output.file_format && output.file_format.length > 0 ? output.file_format.filter(f => f.trim() !== '') : []
         };
+
+        // Only include folder_name if default is 'directory'
+        if (output.default === 'directory') {
+          outputData.folder_name = output.folder_name || '';
+        }
 
         // Add image-specific fields only if type is image
         if (output.type === 'image') {
