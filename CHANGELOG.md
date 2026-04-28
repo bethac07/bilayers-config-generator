@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Simplified input/output schema and updated docs to match current generator behavior
+- Added mutually exclusive `input_dir_set` and `output_dir_set` handling for textbox parameters, with conditional `folder_name`
+
 ## [0.1.0] - 2025-07-30
 
 ### Added
@@ -16,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive Input/Output configuration with conditional fields
 - Parameter system with type-specific options (checkbox, textbox, radio, dropdown)
 - Display-only items component
-- Citations management system
 - Glass morphism UI with customizable color themes
 - Monaco Editor integration for YAML editing
 - Collapsible sections for organized interface
@@ -26,23 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type-safe configuration validation
 
 ### Features
-- **Component Types**:
-  - Citations with DOI support
-  - Docker image configuration
-  - Algorithm folder naming
-  - Exec function with CLI commands
-  - Inputs with image-specific fields
-  - Outputs with format specifications
-  - Parameters with conditional type fields
-  - Display-only configuration items
-
-- **UI/UX**:
-  - Modern glass morphism design
-  - Collapsible sections
-  - Real-time YAML preview
-  - Responsive layout
-  - Beautiful color theming
-
 - **Technical**:
   - React 18 with hooks
   - Vite build system

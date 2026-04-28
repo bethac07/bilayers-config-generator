@@ -11,6 +11,7 @@ export default function ParameterItem({ index, data, onChange, remove }) {
     if (field === 'type') {
       // Remove all type-specific fields first
       delete newData.append_value;
+      delete newData.input_dir_set;
       delete newData.output_dir_set;
       delete newData.options;
       delete newData.multiselect;
@@ -19,13 +20,19 @@ export default function ParameterItem({ index, data, onChange, remove }) {
       if (value === 'checkbox') {
         newData.append_value = false;
       } else if (value === 'textbox') {
+        newData.input_dir_set = false;
         newData.output_dir_set = false;
+        newData.folder_name = newData.folder_name || '';
       } else if (value === 'radio' || value === 'dropdown') {
         newData.options = [];
         if (value === 'dropdown') {
           newData.multiselect = false;
         }
       }
+    } else if (field === 'input_dir_set' && value === true) {
+      newData.output_dir_set = false;
+    } else if (field === 'output_dir_set' && value === true) {
+      newData.input_dir_set = false;
     }
     
     setFormData(newData);
@@ -207,19 +214,46 @@ export default function ParameterItem({ index, data, onChange, remove }) {
           </div>
         )}
 
-        {/* Textbox Type - output_dir_set */}
+        {/* Textbox Type - directory binding */}
         {formData.type === 'textbox' && (
-          <div>
-            <label className="block text-sm font-medium text-white/70 mb-1">Output Dir Set</label>
-            <select
-              value={formData.output_dir_set}
-              onChange={(e) => handleChange('output_dir_set', e.target.value === 'true')}
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              <option value={false}>False</option>
-              <option value={true}>True</option>
-            </select>
-          </div>
+          <>
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Input Dir Set</label>
+              <select
+                value={formData.input_dir_set}
+                onChange={(e) => handleChange('input_dir_set', e.target.value === 'true')}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value={false}>False</option>
+                <option value={true}>True</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Output Dir Set</label>
+              <select
+                value={formData.output_dir_set}
+                onChange={(e) => handleChange('output_dir_set', e.target.value === 'true')}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value={false}>False</option>
+                <option value={true}>True</option>
+              </select>
+            </div>
+
+            {(formData.input_dir_set || formData.output_dir_set) && (
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-white/70 mb-1">Folder Name</label>
+                <input
+                  type="text"
+                  value={formData.folder_name || ''}
+                  onChange={(e) => handleChange('folder_name', e.target.value)}
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="e.g. /bilayers/my_folder"
+                />
+              </div>
+            )}
+          </>
         )}
 
         {/* Dropdown Type - multiselect */}

@@ -11,15 +11,15 @@ export default function OutputItem({ index, data, onChange, remove }) {
     if (field === 'type') {
       if (value === 'image') {
         // Add image-specific fields with default values
-        newData.subtype = newData.subtype || [];
-        newData.depth = newData.depth !== undefined ? newData.depth : false;
+        newData.image_subtype = newData.image_subtype || [];
+        newData['3d'] = newData['3d'] !== undefined ? newData['3d'] : false;
         newData.timepoints = newData.timepoints !== undefined ? newData.timepoints : false;
         newData.tiled = newData.tiled !== undefined ? newData.tiled : false;
         newData.pyramidal = newData.pyramidal !== undefined ? newData.pyramidal : false;
       } else {
         // Remove image-specific fields
-        delete newData.subtype;
-        delete newData.depth;
+        delete newData.image_subtype;
+        delete newData['3d'];
         delete newData.timepoints;
         delete newData.tiled;
         delete newData.pyramidal;
@@ -31,28 +31,28 @@ export default function OutputItem({ index, data, onChange, remove }) {
   };
 
   const toggleSubtype = (subtypeValue) => {
-    const currentSubtypes = formData.subtype || [];
+    const currentSubtypes = formData.image_subtype || [];
     const newSubtypes = currentSubtypes.includes(subtypeValue)
       ? currentSubtypes.filter(s => s !== subtypeValue)
       : [...currentSubtypes, subtypeValue];
-    handleChange('subtype', newSubtypes);
+    handleChange('image_subtype', newSubtypes);
   };
 
   const addFormat = () => {
-    const currentFormats = formData.format || [];
-    handleChange('format', [...currentFormats, '']);
+    const currentFormats = formData.file_format || [];
+    handleChange('file_format', [...currentFormats, '']);
   };
 
   const updateFormat = (formatIndex, value) => {
-    const currentFormats = [...(formData.format || [])];
+    const currentFormats = [...(formData.file_format || [])];
     currentFormats[formatIndex] = value;
-    handleChange('format', currentFormats);
+    handleChange('file_format', currentFormats);
   };
 
   const removeFormat = (formatIndex) => {
-    const currentFormats = formData.format || [];
+    const currentFormats = formData.file_format || [];
     const newFormats = currentFormats.filter((_, i) => i !== formatIndex);
-    handleChange('format', newFormats);
+    handleChange('file_format', newFormats);
   };
 
   const typeOptions = ['image', 'measurement', 'array', 'executable', 'file'];
@@ -98,38 +98,16 @@ export default function OutputItem({ index, data, onChange, remove }) {
           </select>
         </div>
 
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-white/70 mb-1">Label</label>
-          <input
-            type="text"
-            value={formData.label || ''}
-            onChange={(e) => handleChange('label', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. Output Image Directory"
-          />
-        </div>
-
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-white/70 mb-1">Description</label>
-          <textarea
-            value={formData.description || ''}
-            onChange={(e) => handleChange('description', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. Path to the directory where output images will be saved"
-            rows={2}
-          />
-        </div>
-
         {/* Conditional Subtype Field - Only for image type */}
         {formData.type === 'image' && (
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-white/70 mb-2">Subtype</label>
+            <label className="block text-sm font-medium text-white/70 mb-2">Image Subtype</label>
             <div className="grid grid-cols-2 gap-2">
               {subtypeOptions.map(subtype => (
                 <label key={subtype} className="flex items-center text-sm text-white/70">
                   <input
                     type="checkbox"
-                    checked={(formData.subtype || []).includes(subtype)}
+                    checked={(formData.image_subtype || []).includes(subtype)}
                     onChange={() => toggleSubtype(subtype)}
                     className="mr-2 rounded"
                   />
@@ -141,34 +119,26 @@ export default function OutputItem({ index, data, onChange, remove }) {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">CLI Tag</label>
+          <label className="block text-sm font-medium text-white/70 mb-1">CLI Parameter</label>
           <input
             type="text"
-            value={formData.cli_tag || ''}
-            onChange={(e) => handleChange('cli_tag', e.target.value)}
+            value={formData.cli_parameter || ''}
+            onChange={(e) => handleChange('cli_parameter', e.target.value)}
             className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. --output-dir"
+            placeholder="e.g. output_image_folder"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">CLI Order</label>
-          <input
-            type="number"
-            value={formData.cli_order !== undefined ? formData.cli_order : ''}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value === '' || value === '-') {
-                handleChange('cli_order', value === '' ? 0 : value);
-              } else {
-                const numValue = parseInt(value);
-                handleChange('cli_order', isNaN(numValue) ? 0 : numValue);
-              }
-            }}
-            onFocus={(e) => e.target.select()}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. 0, -1"
-          />
+          <label className="block text-sm font-medium text-white/70 mb-1">Optional</label>
+          <select
+            value={formData.optional}
+            onChange={(e) => handleChange('optional', e.target.value === 'true')}
+            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value={false}>False</option>
+            <option value={true}>True</option>
+          </select>
         </div>
 
         <div>
@@ -184,33 +154,21 @@ export default function OutputItem({ index, data, onChange, remove }) {
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">Optional</label>
-          <select
-            value={formData.optional}
-            onChange={(e) => handleChange('optional', e.target.value === 'true')}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value={false}>False</option>
-            <option value={true}>True</option>
-          </select>
-        </div>
-
-        {/* Format Field - Multiple values */}
+        {/* File Format Field - Multiple values */}
         <div className="col-span-2">
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium text-white/70">Format</label>
+            <label className="block text-sm font-medium text-white/70">File Format</label>
             <button
               onClick={addFormat}
               className="flex items-center gap-1 px-2 py-1 bg-indigo-600/20 text-indigo-300 rounded-md hover:bg-indigo-600/30 transition-colors text-xs"
             >
               <Plus size={12} />
-              Add Format
+              Add File Format
             </button>
           </div>
-          {formData.format && formData.format.length > 0 ? (
+          {formData.file_format && formData.file_format.length > 0 ? (
             <div className="space-y-2">
-              {formData.format.map((fmt, fmtIndex) => (
+              {formData.file_format.map((fmt, fmtIndex) => (
                 <div key={fmtIndex} className="flex gap-2">
                   <input
                     type="text"
@@ -229,7 +187,7 @@ export default function OutputItem({ index, data, onChange, remove }) {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-white/50 italic">No formats configured. Click "Add Format" to add one.</p>
+            <p className="text-sm text-white/50 italic">No file formats configured. Click "Add File Format" to add one.</p>
           )}
         </div>
 
@@ -269,27 +227,14 @@ export default function OutputItem({ index, data, onChange, remove }) {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">Mode</label>
-          <select
-            value={formData.mode || ''}
-            onChange={(e) => handleChange('mode', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">Select mode</option>
-            <option value="beginner">Beginner</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-
         {/* Conditional Boolean Fields - Only for image type */}
         {formData.type === 'image' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-white/70 mb-1">Depth</label>
+              <label className="block text-sm font-medium text-white/70 mb-1">3D</label>
               <select
-                value={formData.depth}
-                onChange={(e) => handleChange('depth', e.target.value === 'true')}
+                value={formData['3d']}
+                onChange={(e) => handleChange('3d', e.target.value === 'true')}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value={false}>False</option>

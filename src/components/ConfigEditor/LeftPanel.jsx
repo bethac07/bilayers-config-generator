@@ -1,4 +1,3 @@
-// src/components/LeftPanel.jsx
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import InputItem from "./InputItem";
@@ -53,33 +52,23 @@ export default function LeftPanel({ setYamlCode }) {
   const addInput = () => setInputs((prev) => [...prev, { 
     name: '', 
     type: '', 
-    label: '', 
-    description: '', 
-    cli_tag: '',
-    cli_order: 0,
-    default: '',
+    cli_parameter: '',
     optional: false,
-    format: [],
+    file_format: [],
     folder_name: '',
     file_count: '',
     section_id: '',
-    mode: ''
   }]);
 
   const addOutput = () => setOutputs((prev) => [...prev, { 
     name: '', 
     type: '', 
-    label: '', 
-    description: '', 
-    cli_tag: '',
-    cli_order: 0,
-    default: '',
+    cli_parameter: '',
     optional: false,
-    format: [],
+    file_format: [],
     folder_name: '',
     file_count: '',
     section_id: '',
-    mode: ''
   }]);
   
   const addParam = () => setParameters((prev) => [...prev, { 
@@ -92,7 +81,10 @@ export default function LeftPanel({ setYamlCode }) {
     mode: '',
     default: '',
     cli_tag: '',
-    cli_order: 0
+    cli_order: 0,
+    input_dir_set: false,
+    output_dir_set: false,
+    folder_name: ''
   }]);
 
   const addDisplayOnly = () => setDisplayOnly((prev) => [...prev, { 
@@ -212,27 +204,23 @@ export default function LeftPanel({ setYamlCode }) {
         const inputData = {
           name: input.name || '',
           type: input.type || '',
-          label: input.label || '',
-          description: input.description || '',
-          cli_tag: input.cli_tag || '',
-          cli_order: input.cli_order !== undefined ? input.cli_order : 0,
-          default: input.default || '',
+          cli_parameter: input.cli_parameter || '',
           optional: input.optional ? 'True' : 'False',
-          format: input.format && input.format.length > 0 ? input.format.filter(f => f.trim() !== '') : [],
           folder_name: input.folder_name || '',
           file_count: input.file_count || '',
-          section_id: input.section_id || '',
-          mode: input.mode || ''
+          file_format: input.file_format && input.file_format.length > 0 ? input.file_format.filter(f => f.trim() !== '') : []
         };
 
         // Add image-specific fields only if type is image
         if (input.type === 'image') {
-          inputData.subtype = input.subtype || [];
-          inputData.depth = input.depth ? 'True' : 'False';
+          inputData.image_subtype = input.image_subtype || [];
+          inputData['3d'] = input['3d'] ? 'True' : 'False';
           inputData.timepoints = input.timepoints ? 'True' : 'False';
           inputData.tiled = input.tiled ? 'True' : 'False';
           inputData.pyramidal = input.pyramidal ? 'True' : 'False';
         }
+
+        inputData.section_id = input.section_id || '';
 
         return inputData;
       }),
@@ -240,27 +228,23 @@ export default function LeftPanel({ setYamlCode }) {
         const outputData = {
           name: output.name || '',
           type: output.type || '',
-          label: output.label || '',
-          description: output.description || '',
-          cli_tag: output.cli_tag || '',
-          cli_order: output.cli_order !== undefined ? output.cli_order : 0,
-          default: output.default || '',
+          cli_parameter: output.cli_parameter || '',
           optional: output.optional ? 'True' : 'False',
-          format: output.format && output.format.length > 0 ? output.format.filter(f => f.trim() !== '') : [],
           folder_name: output.folder_name || '',
           file_count: output.file_count || '',
-          section_id: output.section_id || '',
-          mode: output.mode || ''
+          file_format: output.file_format && output.file_format.length > 0 ? output.file_format.filter(f => f.trim() !== '') : []
         };
 
         // Add image-specific fields only if type is image
         if (output.type === 'image') {
-          outputData.subtype = output.subtype || [];
-          outputData.depth = output.depth ? 'True' : 'False';
+          outputData.image_subtype = output.image_subtype || [];
+          outputData['3d'] = output['3d'] ? 'True' : 'False';
           outputData.timepoints = output.timepoints ? 'True' : 'False';
           outputData.tiled = output.tiled ? 'True' : 'False';
           outputData.pyramidal = output.pyramidal ? 'True' : 'False';
         }
+
+        outputData.section_id = output.section_id || '';
 
         return outputData;
       }),
@@ -282,7 +266,11 @@ export default function LeftPanel({ setYamlCode }) {
         if (param.type === 'checkbox') {
           paramData.append_value = param.append_value ? 'True' : 'False';
         } else if (param.type === 'textbox') {
+          paramData.input_dir_set = param.input_dir_set ? 'True' : 'False';
           paramData.output_dir_set = param.output_dir_set ? 'True' : 'False';
+          if (param.input_dir_set || param.output_dir_set) {
+            paramData.folder_name = param.folder_name || '';
+          }
         } else if (param.type === 'radio' || param.type === 'dropdown') {
           paramData.options = param.options || [];
           if (param.type === 'dropdown') {
@@ -308,6 +296,7 @@ export default function LeftPanel({ setYamlCode }) {
         if (displayItem.type === 'checkbox') {
           displayData.append_value = displayItem.append_value ? 'True' : 'False';
         } else if (displayItem.type === 'textbox') {
+          displayData.input_dir_set = displayItem.input_dir_set ? 'True' : 'False';
           displayData.output_dir_set = displayItem.output_dir_set ? 'True' : 'False';
         } else if (displayItem.type === 'radio' || displayItem.type === 'dropdown') {
           displayData.options = displayItem.options || [];

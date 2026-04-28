@@ -1,6 +1,6 @@
 # Bilayers Configuration Generator
 
-A modern, interactive web application for generating YAML configuration files for bilayers algorithms. Built with React, Vite, and Tailwind CSS.
+An interactive web application for generating YAML configuration files for bilayers algorithms. Built with React, Vite, and Tailwind CSS.
 
 ## Features
 
@@ -17,6 +17,13 @@ A modern, interactive web application for generating YAML configuration files fo
 - **Glass Morphism UI**: Beautiful modern interface with blur effects
 - **Monaco Editor Integration**: Syntax-highlighted YAML editing
 - **Type-safe Configuration**: Intelligent form validation and conditional fields
+
+## Configuration Model
+
+- `inputs` and `outputs` describe the tool data, while `parameters` describe how it runs
+- `inputs` and `outputs` use `cli_parameter` to point to the related parameter name
+- textbox parameters support `input_dir_set` or `output_dir_set` and show `folder_name` only when one is enabled
+- image inputs/outputs use `file_format`, `image_subtype`, and `3d`
 
 ## Quick Start
 
