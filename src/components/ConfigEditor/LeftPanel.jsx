@@ -328,8 +328,8 @@ export default function LeftPanel({ setYamlCode }) {
         }
       }
       
-      // Match lines with key: value pattern - be more specific about key matching
-      const match = line.match(/^(\s*)([a-zA-Z_][a-zA-Z0-9_]*):(.*)$/);
+      // Match lines with key: value pattern, including quoted keys and numeric-leading keys like 3d
+      const match = line.match(/^(\s*)['"]?([a-zA-Z_][a-zA-Z0-9_]*|3d)['"]?:(.*)$/);
       if (match) {
         const [, indent, key, valueWithSpace] = match;
         const value = valueWithSpace.trim();
