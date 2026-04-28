@@ -95,7 +95,10 @@ export default function LeftPanel({ setYamlCode }) {
     optional: false,
     section_id: '',
     mode: '',
-    default: ''
+    default: '',
+    input_dir_set: false,
+    output_dir_set: false,
+    folder_name: ''
   }]);
 
   const addCitation = () => setCitations((prev) => [...prev, {
@@ -298,6 +301,9 @@ export default function LeftPanel({ setYamlCode }) {
         } else if (displayItem.type === 'textbox') {
           displayData.input_dir_set = displayItem.input_dir_set ? 'True' : 'False';
           displayData.output_dir_set = displayItem.output_dir_set ? 'True' : 'False';
+          if (displayItem.input_dir_set || displayItem.output_dir_set) {
+            displayData.folder_name = displayItem.folder_name || '';
+          }
         } else if (displayItem.type === 'radio' || displayItem.type === 'dropdown') {
           displayData.options = displayItem.options || [];
           if (displayItem.type === 'dropdown') {
