@@ -142,7 +142,7 @@ export default function OutputItem({ index, data, onChange, remove }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">Default</label>
+          <label className="block text-sm font-medium text-white/70 mb-1">Single file or directory?</label>
           <select
             value={formData.default || ''}
             onChange={(e) => handleChange('default', e.target.value)}
