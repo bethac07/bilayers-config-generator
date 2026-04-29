@@ -57,7 +57,7 @@ export default function InputItem({ index, data, onChange, remove }) {
 
   const typeOptions = ['image', 'measurement', 'array', 'executable', 'file'];
   const fileCountOptions = ['single', 'multiple'];
-  const subtypeOptions = ['grayscale', 'color', 'binary', 'labeled'];
+  const subtypeOptions = ['grayscale', 'color', 'binary', 'label'];
 
   return (
     <div className="bg-white/10 p-4 rounded-lg mb-3 backdrop-blur-sm border border-white/20">
