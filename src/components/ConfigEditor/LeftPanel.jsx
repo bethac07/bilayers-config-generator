@@ -213,7 +213,8 @@ export default function LeftPanel({ setYamlCode }) {
           optional: input.optional ? 'True' : 'False',
           default: input.default || '',
           file_count: input.file_count || '',
-          file_format: input.file_format && input.file_format.length > 0 ? input.file_format.filter(f => f.trim() !== '') : []
+          file_format: input.file_format && input.file_format.length > 0 ? input.file_format.filter(f => f.trim() !== '') : [],
+          unique_str: input.unique_string  || ''
         };
 
         // Only include folder_name if default is 'directory'
@@ -242,7 +243,8 @@ export default function LeftPanel({ setYamlCode }) {
           optional: output.optional ? 'True' : 'False',
           default: output.default || '',
           file_count: output.file_count || '',
-          file_format: output.file_format && output.file_format.length > 0 ? output.file_format.filter(f => f.trim() !== '') : []
+          file_format: output.file_format && output.file_format.length > 0 ? output.file_format.filter(f => f.trim() !== '') : [],
+          unique_str: output.unique_string  || ''
         };
 
         // Only include folder_name if default is 'directory'
