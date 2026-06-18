@@ -142,30 +142,15 @@ export default function InputItem({ index, data, onChange, remove }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-white/70 mb-1">Single file or directory?</label>
-          <select
-            value={formData.default || ''}
-            onChange={(e) => handleChange('default', e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">Select default</option>
-            <option value="single">single</option>
-            <option value="directory">directory</option>
-          </select>
+          <label className="block text-sm font-medium text-white/70 mb-1">Folder Name</label>
+          <input
+            type="text"
+            value={formData.folder_name || ''}
+            onChange={(e) => handleChange('folder_name', e.target.value)}
+            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="e.g. /bilayers/input_images"
+          />
         </div>
-
-        {formData.default === 'directory' && (
-          <div>
-            <label className="block text-sm font-medium text-white/70 mb-1">Folder Name</label>
-            <input
-              type="text"
-              value={formData.folder_name || ''}
-              onChange={(e) => handleChange('folder_name', e.target.value)}
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="e.g. /bilayers/input_images"
-            />
-          </div>
-        )}
 
         <div>
           <label className="block text-sm font-medium text-white/70 mb-1">File Count</label>
